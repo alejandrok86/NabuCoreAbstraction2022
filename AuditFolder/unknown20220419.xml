@@ -1,0 +1,5 @@
+<audit at="19-abr.-2022 09:58:06:107" service="AuthenticationToken API" method="GetVersion" optional="ProcessingConfigFile" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="19-abr.-2022 09:59:18:441" service="AuthenticationToken API" method="GetVersion" optional="ProcessingConfigFile" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="19-abr.-2022 10:02:31:441" service="AuthenticationToken API" method="GetVersion" optional="ProcessingConfigFile" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="19-abr.-2022 10:14:13:976" service="AuthenticationToken API" method="GetVersion" optional="ProcessingConfigFile" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="19-abr.-2022 10:53:42:310" service="AuthenticationToken API" method="GetVersion" optional="ProcessingConfigFile" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />

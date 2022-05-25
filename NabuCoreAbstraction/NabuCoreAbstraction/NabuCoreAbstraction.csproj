@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Octavo.Gate.Nabu.CORE.Abstraction</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NabuCOREApi\NabuCoreEntities\NabuCoreEntities.csproj" />
+    <ProjectReference Include="..\NabuCoreDOL\NabuCoreDOL.csproj" />
+  </ItemGroup>
+
+</Project>

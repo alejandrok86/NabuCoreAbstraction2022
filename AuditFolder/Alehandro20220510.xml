@@ -1,0 +1,2 @@
+<audit at="10-may.-2022 10:07:45:605" service="TranslationAPI" method="Insert" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="10-may.-2022 10:09:48:879" service="TranslationCollectionAPI" method="List" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />

@@ -1,0 +1,6 @@
+<audit at="09-may.-2022 10:03:42:363" service="LanguageUsageAPI" method="List" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="09-may.-2022 10:04:30:803" service="LanguageUsageAPI" method="GetById" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="09-may.-2022 10:06:15:111" service="LanguageUsageAPI" method="Insert" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="09-may.-2022 10:07:33:660" service="LanguageUsageAPI" method="Update" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="09-may.-2022 10:08:41:561" service="LanguageUsageAPI" method="Update" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="09-may.-2022 10:51:38:918" service="TranslationCollectionAPI" method="List" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />

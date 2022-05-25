@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Octavo.Gate.Nabu.CORE.API.SDK</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\NabuCOREApi\Helper\Field.cs" Link="Field.cs" />
+    <Compile Include="..\NabuCOREApi\Helper\Record.cs" Link="Record.cs" />
+    <Compile Include="..\NabuCOREApi\Helper\RecordSet.cs" Link="RecordSet.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NabuCoreEncryption\NabuCoreEncryption.csproj" />
+    <ProjectReference Include="..\NabuCoreEntities\NabuCoreEntities.csproj" />
+  </ItemGroup>
+
+</Project>

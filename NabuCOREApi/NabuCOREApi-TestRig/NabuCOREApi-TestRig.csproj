@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Octavo.Gate.Nabu.CORE.API.Test.Rig</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NabuCOREApi-SDK\NabuCOREApi-SDK.csproj" />
+    <ProjectReference Include="..\NabuCoreCertificateHelper\NabuCoreCertificateHelper.csproj" />
+    <ProjectReference Include="..\NabuCoreEncryption\NabuCoreEncryption.csproj" />
+    <ProjectReference Include="..\NabuCoreEntities\NabuCoreEntities.csproj" />
+  </ItemGroup>
+
+</Project>

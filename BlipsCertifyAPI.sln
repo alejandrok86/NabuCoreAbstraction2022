@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31911.260
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NabuCOREApi-SDK", "..\..\Projects\OctavoGate\Nabu\Framework\CORE\NabuCOREApi-SDK\NabuCOREApi-SDK.csproj", "{95FD7C77-3E7C-4BF7-9C51-D69C06FD8BA5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NabuCOREApi-TestRig", "..\..\Projects\OctavoGate\Nabu\Framework\CORE\NabuCOREApi-TestRig\NabuCOREApi-TestRig.csproj", "{347E64D7-5F37-47FE-BC8B-ECDBA927710A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NabuCoreEncryption", "..\..\Projects\OctavoGate\Nabu\Framework\CORE\NabuCoreEncryption\NabuCoreEncryption.csproj", "{9F842EDD-7435-4321-9705-564EDFA13C30}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NabuCoreEntities", "..\..\Projects\OctavoGate\Nabu\Framework\CORE\NabuCoreEntities\NabuCoreEntities.csproj", "{02E7A61F-D013-4B9D-B1B9-2F3E0E63F6FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NabuCOREApi", "..\..\Projects\OctavoGate\Nabu\Framework\CORE\NabuCOREApi\NabuCOREApi.csproj", "{EF3CE223-D42F-4516-BE96-D401C23B8B6D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NabuCoreCertificateHelper", "..\..\Projects\OctavoGate\Nabu\Framework\CORE\NabuCoreCertificateHelper\NabuCoreCertificateHelper.csproj", "{EDEF4860-2137-4201-8AB6-63D3A39400E2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95FD7C77-3E7C-4BF7-9C51-D69C06FD8BA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95FD7C77-3E7C-4BF7-9C51-D69C06FD8BA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95FD7C77-3E7C-4BF7-9C51-D69C06FD8BA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95FD7C77-3E7C-4BF7-9C51-D69C06FD8BA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{347E64D7-5F37-47FE-BC8B-ECDBA927710A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{347E64D7-5F37-47FE-BC8B-ECDBA927710A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{347E64D7-5F37-47FE-BC8B-ECDBA927710A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{347E64D7-5F37-47FE-BC8B-ECDBA927710A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F842EDD-7435-4321-9705-564EDFA13C30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F842EDD-7435-4321-9705-564EDFA13C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F842EDD-7435-4321-9705-564EDFA13C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F842EDD-7435-4321-9705-564EDFA13C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E7A61F-D013-4B9D-B1B9-2F3E0E63F6FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E7A61F-D013-4B9D-B1B9-2F3E0E63F6FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E7A61F-D013-4B9D-B1B9-2F3E0E63F6FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E7A61F-D013-4B9D-B1B9-2F3E0E63F6FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3CE223-D42F-4516-BE96-D401C23B8B6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3CE223-D42F-4516-BE96-D401C23B8B6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3CE223-D42F-4516-BE96-D401C23B8B6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3CE223-D42F-4516-BE96-D401C23B8B6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDEF4860-2137-4201-8AB6-63D3A39400E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDEF4860-2137-4201-8AB6-63D3A39400E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDEF4860-2137-4201-8AB6-63D3A39400E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDEF4860-2137-4201-8AB6-63D3A39400E2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4C2B6EE-CEA4-4ECD-AF02-5AD251AF0D68}
+	EndGlobalSection
+EndGlobal

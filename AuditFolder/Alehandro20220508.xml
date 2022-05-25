@@ -1,0 +1,2 @@
+<audit at="08-may.-2022 00:58:23:569" service="CountryAPI" method="List" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="08-may.-2022 01:03:52:865" service="CountryAPI" method="Insert" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />

@@ -1,0 +1,235 @@
+http://localhost:5000/Authentication/AuthenticationToken/Version
+
+http://localhost:5000/Authentication/AuthenticationToken/GetByToken/1
+
+get version
+http://localhost:5000/Globalisation/Language/Version
+by name
+http://localhost:5000/Globalisation/Language/GetBySystemName/name1
+list general
+http://localhost:5000/Globalisation/Language/List
+
+put
+
+http://localhost:5000/Globalisation/Language/Update/id
+{
+  "stackTrace": "string",
+  "languageID": 10,
+  "systemName": "sistem222",
+  "nativeName": "string",
+  "isoCode": "string",
+  "isRightToLeftLanguage": true,
+  "cultureInfo": "string"
+  }
+
+
+
+
+insert post
+http://localhost:5000/Globalisation/Language/Insert
+{
+        
+        "systemName": "na12355",
+        "nativeName": "jose",
+        "isoCode": "iso145",
+        "isRightToLeftLanguage": false,
+        "cultureInfo": "ddd",
+        "errorsDetected": false,
+        "errorCode": null,
+        "errorDetails": [],
+        "stackTrace": null
+}
+
+delete
+
+http://localhost:5000/Globalisation/Language/Delete/
+
+{
+  "stackTrace": "string",
+  "languageID": 7,
+  "systemName": "string",
+  "nativeName": "string",
+  "isoCode": "string",
+  "isRightToLeftLanguage": true,
+  "cultureInfo": "string"
+  }
+
+------------
+http://localhost:5000/Globalisation/Language/InsertLan
+
+http://localhost:5000/Globalisation/Language/Insert_Country
+
+
+http://localhost:5000/Education/AcademicCycle
+
+--------------
+
+CRUD con dos parametros
+
+control + h
+
+control + f
+
+
+selccion
+edutacuon  y autentiction pox paso
+
+controller + f llama venta remplazo
+
+control + H seleciona todo los seleccionado
+repalzpo
+
+copiar coontrolar y cambiar los nombnre y atributos correspondientes
+
+
+//////////controller Countre
+
+Put
+http://localhost:5000/Globalisation/Translation/Insert
+
+json 
+
+{
+    "translationID": 3,
+    "translationLanguage": {
+        "languageID": 1,
+        "systemName": null,
+        "nativeName": null,
+        "isoCode": null,
+        "isRightToLeftLanguage": false,
+        "cultureInfo": null,
+        "errorsDetected": false,
+        "errorCode": null,
+        "errorDetails": [],
+        "stackTrace": null
+    },
+    "alias": "Kris",
+    "name": "",
+    "description": "",
+    "errorsDetected": false,
+    "errorCode": null,
+    "errorDetails": [],
+    "stackTrace": null
+}
+
+
+///GET
+
+http://localhost:5000/Globalisation/Translation/GetTranslationByAlias/alejandrok/1
+
+
+///PUT
+http://localhost:5000/Globalisation/Translation/Update
+
+{
+    "translationID": 3,
+    "translationLanguage": {
+        "languageID": 1,
+        "systemName": null,
+        "nativeName": null,
+        "isoCode": null,
+        "isRightToLeftLanguage": false,
+        "cultureInfo": null,
+        "errorsDetected": false,
+        "errorCode": null,
+        "errorDetails": [],
+        "stackTrace": null
+    },
+    "alias": "Juan bisca",
+    "name": "",
+    "description": "",
+    "errorsDetected": false,
+    "errorCode": null,
+    "errorDetails": [],
+    "stackTrace": null
+}
+
+
+//////
+
+----------
+ "Octavo.Gate.Nabu.Data": {
+    "Source": "Data Source=KRISTIAN-PC\\SQLEXPRESS2019;Integrated Security=True;Initial Catalog=Novartis_OLT",
+    "ErrorLogFile": "D:\\tmp\\Nabu\\ErrorLogs\\Novartis_OLT.log"
+
+
+"Source"  agregar la cadena de conexion
+
+
+ErrorLogFile el archivo log a donde apunta 
+
+
+nombre instancia sql 2019   
+SQLTAMADA
+
+
+-------
+
+HEADERS
+
+APIKey
+APILicensedTo
+
+
+-------------
+
+para practicar 
+
+exterder las funcionalidades
+
+siempre usando como referencia el nabuCoreAbstraction
+ poryecto
+arrabncar con 
+GlobalisationAbstraction.cs
+
+luego
+ NabucoreAPI
+
+controller 
+Globalization
+
+languajeController.cs
+
+--------Languaje
+exter el CRUD
+
+
+para probar
+http://localhost:5000/Globalisation/Language/List
+
+APIKey  b5add9816d54474595eb4baeed0959a8
+
+APILicensedTo  Alehandro
+
+* no agregar nuevas tablas a la base de datos sin consultar
+
+solo agregar funcionalidades al codigo 
+
+
+-------
+
+controler para cada uno
+
+
+metodo para cada metodo
+
+
+
+languaje controler 
+
+get
+list
+
+api equiv metodo
+
+
+languaje id
+
+
+Apellido(s)	Nombre	Dirección de correo	Estado	Comenzado el	Finalizado	Tiempo requerido	Calificación/100,00	P. 1 /10,00	P. 2 /10,00	P. 3 /10,00	P. 4 /10,00	P. 5 /10,00	P. 6 /10,00	P. 7 /10,00	P. 8 /10,00	P. 9 /10,00	P. 10 /10,00
+Santander Villalba	Carlos Benjamín	csantandervillalba@gmail.com	Finalizado	6 de abril de 2022 20:01	6 de abril de 2022 20:49	47 minutos 29 segundos	100,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00
+Vargas	Pablo Alejandro	12345pabloseba@gmail.com	Finalizado	6 de abril de 2022 20:02	6 de abril de 2022 20:33	30 minutos 29 segundos	100,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00
+Gallardo	Cristian Martín	gallotopo@outlook.es	Finalizado	6 de abril de 2022 20:03	6 de abril de 2022 20:47	44 minutos 35 segundos	100,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00
+Mierez	Ramón Enrique	ramonmierez74@gmail.com	Finalizado	12 de abril de 2022 21:37	12 de abril de 2022 22:29	51 minutos 53 segundos	90,00	10,00	0,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00
+Diaz	Jonas Damian	jonasdamiandia391@gmail.com	Finalizado	18 de abril de 2022 16:02	18 de abril de 2022 16:38	35 minutos 37 segundos	100,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00
+Promedio general							98,00	10,00	8,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00	10,00

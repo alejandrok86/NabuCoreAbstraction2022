@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Octavo.Gate.Nabu.CORE.API</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NabuCoreAbstraction\NabuCoreAbstraction\NabuCoreAbstraction.csproj" />
+    <ProjectReference Include="..\..\NabuCoreAbstraction\NabuCoreDOL\NabuCoreDOL.csproj" />
+    <ProjectReference Include="..\NabuCOREApiHelper\NabuCOREApiHelper.csproj" />
+    <ProjectReference Include="..\NabuCoreCertificateHelper\NabuCoreCertificateHelper.csproj" />
+    <ProjectReference Include="..\NabuCoreEncryption\NabuCoreEncryption.csproj" />
+    <ProjectReference Include="..\NabuCoreEntities\NabuCoreEntities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Knowledge\" />
+    <Folder Include="Controllers\Item\" />
+    <Folder Include="Controllers\Healthcare\" />
+    <Folder Include="Controllers\Operations\" />
+    <Folder Include="Controllers\PeopleAndPlaces\" />
+    <Folder Include="Controllers\Project\" />
+    <Folder Include="Controllers\Planning\" />
+    <Folder Include="Controllers\Publicity\" />
+    <Folder Include="Controllers\Reporting\" />
+    <Folder Include="Controllers\ServiceManagement\" />
+    <Folder Include="Controllers\Social\" />
+    <Folder Include="Controllers\System\" />
+    <Folder Include="Controllers\Tweet\" />
+    <Folder Include="Controllers\Utility\" />
+    <Folder Include="Controllers\Workflow\" />
+  </ItemGroup>
+
+
+</Project>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<certificate backgroundImage="D:\Projects\OctavoGate\Nabu\Framework\CORE\NabuCoreCertificateHelper\Example\Certificate.png" width="960" height="720" style="font-size:12pt; font-weight:normal; text-align:left; font-family:Arial; color:black;">
+  <div style="top: 230px; left: 0px;">
+    <p id="_textCandidateName" style="font-size:30pt; font-weight:bold; text-align:center;"></p>
+  </div>
+  <div style="top: 350px; left: 0px;">
+    <p id="_textTestName" style="font-size:22pt; font-weight:bold; text-align:center;"></p>
+  </div>
+  <div style="top: 455px; left: 600px;">
+    <table>
+      <tr style="height:20px;">
+        <td style="width:95px;">
+          <p style="font-size:12pt; font-weight:bold;">Completed : </p>
+        </td>
+        <td>
+          <p id="_textTestCompletedAt" style="font-size:12pt;"></p>
+        </td>
+      </tr>
+      <tr style="height:20px;">
+        <td style="width:95px;">
+          <p style="font-size:12pt; font-weight:bold;">Score : </p>
+        </td>
+        <td>
+          <p id="_textTestScore" style="font-size:12pt;"></p>
+        </td>
+      </tr>
+      <tr style="height:20px;">
+        <td style="width:95px;">
+          <p style="font-size:12pt; font-weight:bold;">Result : </p>
+        </td>
+        <td>
+          <p id="_textTestResult" style="font-size:12pt;"></p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</certificate>

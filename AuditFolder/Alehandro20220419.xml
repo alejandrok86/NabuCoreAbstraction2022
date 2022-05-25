@@ -1,0 +1,3 @@
+<audit at="19-abr.-2022 10:59:00:437" service="AuthenticationToken API" method="GetVersion" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="19-abr.-2022 11:10:29:844" service="LanguageAPI" method="List" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="19-abr.-2022 11:13:24:596" service="LanguageAPI" method="List" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />

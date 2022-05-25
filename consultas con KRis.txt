@@ -1,0 +1,209 @@
+
+estos dos metododos del AccountSession 
+son similares 
+
+ver si se implementan con Post o Get
+
+este tira  error aparentemente porque son similares (ver si es Post o Get)
+ public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, bool pUserAccountIDAsExtraSalt)
+     
+este anduvo con Post
+public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, int pNumberOfDaysBetweenPasswordChange, int pInvalidAttemptsBeforeAccountLock, bool bAllowConcurrentConnections, bool pUserAccountIDAsExtraSalt)
+
+
+
+consultar si los metodos
+put , delete llevar parametros en la url
+
+
+UserAccountQuestionController
+
+        // PUT api/<UserAccountQuestionController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<UserAccountQuestionController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+
+        */
+
+
+dudas de como implementar estos metodos
+
+/**********************************************************************
+         * User Account  Controller
+ 
+ // public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, bool pUserAccountIDAsExtraSalt)
+
+// public UserAccountSession Login(string pAccountName, string pPassword, string pIPAddress, int pLanguageID)
+
+
+///public UserAccountSession Login(string pAccountName, string pPassword, string pIPAddress, int pLanguageID, int pNumberOfDaysBetweenPasswordChange, int pInvalidAttemptsBeforeAccountLock, bool bAllowConcurrentConnections)
+
+
+
+
+/**********************************************************************
+UserAccountSessionController
+
+        // public UserAccountSession Logout(UserAccountSession pUserAccountSession, int pLanguageID)
+
+        //public UserAccountSession Logout(UserAccountSession pUserAccountSession,Entities.System.SessionEndStatus pSessionEndStatus)
+
+        //public BaseBoolean UserAccountSessionHeartbeat(int pUserAccountSessionID)
+
+
+------
+*********************************************************************
+         * User Account Session
+
+
+// public UserAccountSession Logout(UserAccountSession pUserAccountSession, int pLanguageID)
+
+
+// public UserAccountSession Logout(UserAccountSession pUserAccountSession,Entities.System.SessionEndStatus pSessionEndStatus)
+
+
+/// public BaseBoolean UserAccountSessionHeartbeat(int pUserAccountSessionID)
+
+
+//public BaseBoolean DeleteUserAccountSessions(UserAccount pUserAccount)
+
+
+
+
+////Class Education
+ //**********************************************************************
+Academic Level
+
+// /// Error al implementar
+        public AcademicLevel[] ListAcademicLevels(AcademicStage pAcademicStage, EducationProvider pEducationProvider, int pLanguageID)
+
+
+
+// /// Error al implementar
+        public AcademicLevel AssignAcademicLevel(AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+        
+
+
+///// Error al implementar
+        public AcademicLevel RemoveAcademicLevel(AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+        
+
+
+ //**********************************************************************
+Academic Modality
+
+
+//public AcademicModality[] ListAcademicModalities(AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider, int pLanguageID)
+
+//public AcademicModality AssignAcademicModality(AcademicModality pAcademicModality, AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+
+
+//public AcademicModality RemoveAcademicModality(AcademicModality pAcademicModality, AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+        
+
+
+
+
+ //**********************************************************************
+         * Academic Stage
+
+
+  //Error
+        //public AcademicStage[] ListAcademicStages(EducationProvider pEducationProvider, int pLanguageID)
+
+     //public AcademicStage AssignAcademicStage(AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+
+
+        //public AcademicStage RemoveAcademicStage(AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+
+////**********************************************************************
+
+NO hay implementacion en Abstraccion de 
+AssessmentEventController
+
+
+
+/**********************************************************************
+         * Assessment Instrument
+
+       ///ERROR
+        //public AssessmentInstrument[] ListAssessmentInstruments(int pUnitID, int pLanguageID)
+        ///ERROR
+        //public AssessmentInstrument[] ListAssessmentInstruments(Octavo.Gate.Nabu.CORE.Entities.Core.Party pOwnedBy, int pLanguageID)
+
+
+/**********************************************************************
+         * Assessment Provider
+
+
+  //public Entities.BaseBoolean AssignAssessmentProvider(EducationProvider pEducationProvider)
+
+
+ //public Entities.BaseBoolean RemoveAssessmentProvider(EducationProvider pEducationProvider)
+
+
+**********************************
+  /**********************************************************************
+         * Assessment Session 
+         *********************************************************************/
+
+
+/////ERROR
+        //public Entities.BaseBoolean AssignAssessmentSession(EducationSession pEducationSession)
+
+
+        // public Entities.BaseBoolean RemoveAssessmentSession(EducationSession pEducationSession)
+
+
+
+-------------
+//NO ESTA IMPLEMENTADO EN EL EDUCATIONABSTRACTION
+
+
+//AssessmentSubscription
+
+//AttendanceRegisterController
+
+//AttendanceRegisterRowController
+
+//AttendanceRegisterRowController
+
+//AttendanceRegisterSheetController
+
+//AttendanceRegisterVersionController
+
+//CandidateCodeController
+
+//CandidateController
+  /**********************************************************************
+
+
+/********AwardingBodyController
+
+  //public ClassGroup[] ListClassGroups(AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider, int pLanguageID)
+
+
+      //public ClassGroup AssignClassGroup(ClassGroup pClassGroup, AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+
+
+        //public ClassGroup RemoveClassGroup(ClassGroup pClassGroup, AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+
+
+
+
+---------
+24-5-222
+
+hoy agregue el nuevo proyecto de NabuCOREApiHelper
+de ahi tengo q import el using a ese proyecto y colocar la nueva varible al metodo logout
+ver como hacer eso de using 
+
+en todo caso mañana a la tarde podemos conectar con kris
+
