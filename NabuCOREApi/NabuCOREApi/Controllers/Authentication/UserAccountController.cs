@@ -8,6 +8,7 @@ using Octavo.Gate.Nabu.CORE.API.Helper;
 using Microsoft.Extensions.Configuration;
 using Octavo.Gate.Nabu.CORE.Abstraction;
 using Octavo.Gate.Nabu.CORE.Entities;
+using Octavo.Gate.Nabu.CORE.API.Helper.Authentication;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,16 +65,16 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
         }
 
 
-        /*
-         * Este metodo esta duplicado, en el AuthenticationAbstraction consultar con KRIS
-         * o si se implementa como un GET consultar con KRIS
-         * 
+        // public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, bool pUserAccountIDAsExtraSalt)
+        // * Este metodo esta duplicado, en el AuthenticationAbstraction consultar con KRIS
+        // * o si se implementa como un GET consultar con KRIS
+        //* 
         ///public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, bool pUserAccountIDAsExtraSalt)
         //Post 
         // this method Post it is ok?  
-        
+
         [HttpPost("EncryptedLogin")]
-        public IActionResult EncryptedLogin([FromBody] string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, bool pUserAccountIDAsExtraSalt)
+        public IActionResult EncryptedLogin([FromBody] EncriptedLogRequest pEncriptedLogRequest)
         {
             Entities.Authentication.UserAccount userAccount = new Entities.Authentication.UserAccount();
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountdTo"))
@@ -90,7 +91,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(authenticationAbstraction.EncryptedLogin(pAccountName, pUnEncryptedPassword, pIPAddress, pLanguageID,pUserAccountIDAsExtraSalt));
+                        return Ok(authenticationAbstraction.EncryptedLogin(pEncriptedLogRequest.pAccountName, pEncriptedLogRequest.pUnEncryptedPassword, pEncriptedLogRequest.pIPAddress, pEncriptedLogRequest.language.LanguageID.Value, pEncriptedLogRequest.pUserAccountIDAsExtraSalt));
                     }
                     else
                     {
@@ -119,10 +120,10 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
             }
         }
 
-        */
+        
 
 
-
+        /*
         //public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, int pNumberOfDaysBetweenPasswordChange, int pInvalidAttemptsBeforeAccountLock, bool bAllowConcurrentConnections, bool pUserAccountIDAsExtraSalt)
         //Post 
         // this method Post it is ok? (to EncryptedLogin)
@@ -144,59 +145,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(authenticationAbstraction.EncryptedLogin( pAccountName, pUnEncryptedPassword, pIPAddress, pLanguageID, pNumberOfDaysBetweenPasswordChange, pInvalidAttemptsBeforeAccountLock, bAllowConcurrentConnections, pUserAccountIDAsExtraSalt));
-                    }
-                    else
-                    {
-
-                        userAccount.ErrorsDetected = true;
-                        userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
-                        return Unauthorized(userAccount);
-                    }
-                }
-                else
-                {
-                    if (apiAccess.AuditActivity)
-                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-
-                    userAccount.ErrorsDetected = true;
-                    userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(userAccount);
-                }
-            }
-            else
-            {
-
-                userAccount.ErrorsDetected = true;
-                userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountdTo within Header"));
-                return Unauthorized(userAccount);
-            }
-        }
-
-        /*
-         * 
-        // public UserAccountSession Login(string pAccountName, string pPassword, string pIPAddress, int pLanguageID)
-        //Post 
-        // this method Post it is ok? (to EncryptedLogin)
-        [HttpPost("Login")]
-        public IActionResult Login([FromBody] string pAccountName, string pPassword, string pIPAddress, int pLanguageID)
-        {
-            Entities.Authentication.UserAccount userAccount = new Entities.Authentication.UserAccount();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountdTo"))
-            {
-                MethodBase method = MethodBase.GetCurrentMethod();
-                APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountdTo"]);
-                if (state == APIKeyState.KeyValidAccessGranted)
-                {
-                    if (apiAccess.AuditActivity)
-                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-
-                    if (apiAccess.InvokeProtectedMethods)
-                    {
-                        AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
-
-                        return Ok(authenticationAbstraction.Login(pAccountName, pPassword,  pIPAddress, pLanguageID));
+                       // return Ok(authenticationAbstraction.EncryptedLogin( pAccountName, pUnEncryptedPassword, pIPAddress, pLanguageID, pNumberOfDaysBetweenPasswordChange, pInvalidAttemptsBeforeAccountLock, bAllowConcurrentConnections, pUserAccountIDAsExtraSalt));
                     }
                     else
                     {
@@ -226,7 +175,61 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
         }
 
         */
+          
+        // public UserAccountSession Login(string pAccountName, string pPassword, string pIPAddress, int pLanguageID)
+        //Post 
+        // this method Post it is ok? (to EncryptedLogin)
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody] LoginRequest pLoginRequest)
+        {
+            Entities.Authentication.UserAccount userAccount = new Entities.Authentication.UserAccount();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountdTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountdTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                        return Ok(authenticationAbstraction.Login(pLoginRequest.pAccountName, pLoginRequest.pPassword, pLoginRequest.pIPAddress,pLoginRequest.language.LanguageID.Value));
+                    }
+                    else
+                    {
+
+                        userAccount.ErrorsDetected = true;
+                        userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(userAccount);
+                    }
+                }
+                else
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    userAccount.ErrorsDetected = true;
+                    userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccount);
+                }
+            }
+            else
+            {
+
+                userAccount.ErrorsDetected = true;
+                userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountdTo within Header"));
+                return Unauthorized(userAccount);
+            }
+        }
+
+        
+
+
+        /*
         /// public UserAccountSession Login(string pAccountName, string pPassword, string pIPAddress, int pLanguageID, int pNumberOfDaysBetweenPasswordChange, int pInvalidAttemptsBeforeAccountLock, bool bAllowConcurrentConnections)
         //Post 
         // this method Post it is ok? (to EncryptedLogin)
@@ -278,7 +281,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
         }
 
 
-
+        */
 
 
         /*

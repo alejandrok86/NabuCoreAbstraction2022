@@ -310,11 +310,12 @@ namespace Octavo.Gate.Nabu.CORE.Abstraction
         /**********************************************************************
          * User Account
          *********************************************************************/
+        ///Es correcto?
         public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, bool pUserAccountIDAsExtraSalt)
         {
             return EncryptedLogin(pAccountName, pUnEncryptedPassword, pIPAddress, pLanguageID, 30, 3, true, pUserAccountIDAsExtraSalt);
         }
-
+        ///Es correcto?
         public UserAccountSession EncryptedLogin(string pAccountName, string pUnEncryptedPassword, string pIPAddress, int pLanguageID, int pNumberOfDaysBetweenPasswordChange, int pInvalidAttemptsBeforeAccountLock, bool bAllowConcurrentConnections, bool pUserAccountIDAsExtraSalt)
         {
             if (base.DBType == DatabaseType.MSSQL)
@@ -987,22 +988,7 @@ namespace Octavo.Gate.Nabu.CORE.Abstraction
                 return null;
         }
 
-        /// consultar con Kris la implementacion
-        ///
-        /// 
-        /*
-public UserAccountSession Logout(UserAccountSession pUserAccountSession,Entities.System.SessionEndStatus pSessionEndStatus)
-{
-    if (base.DBType == DatabaseType.MSSQL)
-    {
-        Octavo.Gate.Nabu.CORE.DOL.MSSQL.Authentication.UserAccountSessionDOL DOL = new CORE.DOL.MSSQL.Authentication.UserAccountSessionDOL(base.ConnectionString, base.ErrorLogFile);
-        pUserAccountSession.SessionEndStatus = pSessionEndStatus;
-        return DOL.Update(pUserAccountSession);
-    }
-    else
-        return null;
-}
-    */
+       
         public UserAccountSession Logout(UserAccountSession pUserAccountSession, Entities.System.SessionEndStatus pSessionEndStatus)
         {
             if (base.DBType == DatabaseType.MSSQL)

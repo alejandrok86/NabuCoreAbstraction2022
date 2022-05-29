@@ -72,20 +72,16 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
             }
         }
 
-
-        /*
-        ///ver como pasar al body los parametros, no puedo haber mas de uno , implementar como clase separada
-        ///
-        //public UserAccountSession Logout(UserAccountSession pUserAccountSession, Entities.System.SessionEndStatus pSessionEndStatus)
-        */
+       
+        
+      
+        
        // public UserAccountSession Logout(UserAccountSession pUserAccountSession, int pLanguageID)
         [HttpPost("Logout")]
-        public IActionResult Logout([FromBody] LogoutRequest pLogoutRequest, int pLanguageID)
+        public IActionResult Logout( [FromBody] LogoutRequest pLogoutRequest)
         {
             Entities.Authentication.UserAccountSession userAccountSession = new Entities.Authentication.UserAccountSession();
-            // BaseAbstraction base = new BaseAbstraction();
-
-           
+                
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountSessiondTo"))
             {
                 MethodBase method = MethodBase.GetCurrentMethod();
@@ -99,23 +95,19 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     if (apiAccess.InvokeProtectedMethods)
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
-                        
-                            ///Bloque de codigo nuevo 
+                                                   
                         if (pLogoutRequest.sessionEndStatus == null)
-                            /// si la estado es NULL entonces crear una nueva sesion
+                           
                         {
-                            //ver como sacar las variables base.ConnectionString, base.ErrorLogFile
-
-                            //Octavo.Gate.Nabu.CORE.DOL.MSSQL.System.SessionEndStatusDOL DOL = new CORE.DOL.MSSQL.System.SessionEndStatusDOL(base.ConnectionString, base.ErrorLogFile);
-                            Octavo.Gate.Nabu.CORE.DOL.MSSQL.System.SessionEndStatusDOL DOL = new CORE.DOL.MSSQL.System.SessionEndStatusDOL(base.ConnectionString, base.ErrorLogFile);
-                           // Entities.System.SessionEndStatus sessionEndStatus = DOL.GetByAlias("LOGOUT", pLanguageID);
-                            pLogoutRequest.sessionEndStatus = DOL.GetByAlias("LOGOUT", pLanguageID);
-                            ///crea la sesion en sessionEndStatus = DOL.GetByAlias("LOGOUT", pLanguageID) con los datos del front
-                            return Ok(authenticationAbstraction.Logout(pLogoutRequest.userAccountSession, pLanguageID));
+                            
+                           Octavo.Gate.Nabu.CORE.DOL.MSSQL.System.SessionEndStatusDOL DOL = new CORE.DOL.MSSQL.System.SessionEndStatusDOL(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+                          pLogoutRequest.sessionEndStatus = DOL.GetByAlias("LOGOUT", pLogoutRequest.language.LanguageID.Value);
+                           
+                            return Ok(authenticationAbstraction.Logout(pLogoutRequest.userAccountSession, pLogoutRequest.language.LanguageID.Value));
                         }
                         else
                          {
-                            return Ok(authenticationAbstraction.Logout(pLogoutRequest.userAccountSession, pLanguageID));
+                            return Ok(authenticationAbstraction.Logout(pLogoutRequest.userAccountSession, pLogoutRequest.language.LanguageID.Value));
 
                         }
                         
@@ -148,12 +140,55 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
         }
 
 
-        
-
 
 
         //public BaseBoolean UserAccountSessionHeartbeat(int pUserAccountSessionID)
+        [HttpPost("UserAccountSessionHeartbeat")]
+        public IActionResult UserAccountSessionHeartbeat([FromBody] int pUserAccountSessionID)
+        {
+            Entities.Authentication.UserAccount userAccount = new Entities.Authentication.UserAccount();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountdTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountdTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                        return Ok(authenticationAbstraction.UserAccountSessionHeartbeat(pUserAccountSessionID));
+                    }
+                    else
+                    {
+
+                        userAccount.ErrorsDetected = true;
+                        userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(userAccount);
+                    }
+                }
+                else
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    userAccount.ErrorsDetected = true;
+                    userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccount);
+                }
+            }
+            else
+            {
+
+                userAccount.ErrorsDetected = true;
+                userAccount.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountdTo within Header"));
+                return Unauthorized(userAccount);
+            }
+        }
 
 
 
@@ -196,8 +231,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
 
         //public UserAccountSession[] ListUserAccountSessions(int pUserAccountID, int pLanguageID)
 
-
-        [HttpGet("List/{pUserAccountSessionID}/{pLanguageID}")]
+       [HttpGet("List/{pUserAccountSessionID}/{pLanguageID}")]
         public IActionResult List(int pUserAccountSessionID, int pLanguageID)
         {
 
@@ -282,8 +316,6 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                 return Unauthorized(userAccountSession);
             }
         }
-
-
 
 
         //public UserAccountSession UpdateUserAccountSession(UserAccountSession pUserAccountSession)
@@ -383,10 +415,11 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
             }
         }
 
-        /*
+        
         //public BaseBoolean DeleteUserAccountSessions(UserAccount pUserAccount)
-        [HttpDelete("Delete")]
-        public IActionResult Delete([FromBody] Entities.Authentication.UserAccount pUserAccount)
+        [HttpDelete("DeleteUserAccountSessions")]
+       
+        public IActionResult DeleteUserAccountSessions([FromBody] Entities.Authentication.UserAccount pUserAccount)
         {
             Entities.Authentication.UserAccountSession userAccountSession = new Entities.Authentication.UserAccountSession();
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountSessiondTo"))
@@ -432,43 +465,6 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
 
             }
         }
-        */
-
-
-
-        /*
-        // GET: api/<UserAccountSessionController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<UserAccountSessionController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<UserAccountSessionController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<UserAccountSessionController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserAccountSessionController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        */
+       
     }
 }
