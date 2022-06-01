@@ -12,19 +12,19 @@ namespace Octavo.Gate.Nabu.CORE.API.Helper.Authentication
         
         [DataMember]
 
-        public string AccountName { get; set; } = null;
+        public string pAccountName { get; set; } = null;
         [DataMember]
-        public string UnEncryptedPassword { get; set; } = null;
+        public string pUnEncryptedPassword { get; set; } = null;
 
         [DataMember]
-        public string IPAddress { get; set; } = null;
+        public string pIPAddress { get; set; } = null;
 
         [DataMember]
         public Language language { get; set; } = null;
 
         [DataMember]
 
-        public bool UserAccountIDAsExtraSalt { get; set; } = false;
+        public bool pUserAccountIDAsExtraSalt { get; set; } = false;
 
     }
 }

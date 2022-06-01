@@ -13,18 +13,19 @@ using Octavo.Gate.Nabu.CORE.Entities;
 
 namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
 {
-    [Route("Authentication/UserAccountQuestion")]
+    [Route("Authentication/UserAccountPasswordHistory")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "Authentication")]
-    public class UserAccountQuestionController : ControllerBase
+    public class UserAccountPasswordHistoryController : ControllerBase
     {
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("UserAccountQuestion API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("AuthenticationToken API", 1, 0, 0, "");
 
-        public UserAccountQuestionController(IConfiguration config)
+        public UserAccountPasswordHistoryController(IConfiguration config)
         {
             _config = config;
         }
+
         /************************************************************************************************************************************
          * API Version
          ***********************************************************************************************************************************/
@@ -63,11 +64,12 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
             }
         }
 
-        //public UserAccountQuestion GetUserAccountQuestion(int pUserAccountQuestionID, int pLanguageID)
-        [HttpGet("Get/{ipUserAccountQuestionID}/{pLanguageID}")]
-        public IActionResult Get(int pUserAccountQuestionID, int pLanguageID)
+
+        //public UserAccountPasswordHistory GetUserAccountPasswordHistory(int pUserAccountPasswordHistoryID)
+        [HttpGet("Get/{pUserAccountPasswordHistoryID}")]
+        public IActionResult Get(int pUserAccountPasswordHistoryID)
         {
-            Entities.Authentication.UserAccountQuestion userAccountQuestion = new Entities.Authentication.UserAccountQuestion();
+            Entities.Authentication.UserAccountPasswordHistory userAccountPasswordHistory = new Entities.Authentication.UserAccountPasswordHistory();
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
             {
                 System.Reflection.MethodBase method = MethodBase.GetCurrentMethod();
@@ -80,36 +82,82 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
 
                     AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                    return Ok(authenticationAbstraction.GetUserAccountQuestion(pUserAccountQuestionID, pLanguageID));
+                    return Ok(authenticationAbstraction.GetUserAccountPasswordHistory(pUserAccountPasswordHistoryID));
                 }
                 else
                 {
                     apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
-                    userAccountQuestion.ErrorsDetected = true;
-                    userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(userAccountQuestion);
+                    userAccountPasswordHistory.ErrorsDetected = true;
+                    userAccountPasswordHistory.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountPasswordHistory);
                 }
             }
             else
             {
-                userAccountQuestion.ErrorsDetected = true;
-                userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
-                return Unauthorized(userAccountQuestion);
+                userAccountPasswordHistory.ErrorsDetected = true;
+                userAccountPasswordHistory.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
+                return Unauthorized(userAccountPasswordHistory);
             }
         }
 
-        //public UserAccountQuestion InsertUserAccountQuestion(UserAccountQuestion pUserAccountQuestion)
+        // public UserAccountPasswordHistory[] ListUserAccountPasswordHistories(int pUserAccountID)
 
-        [HttpPost("Insert")]
-        public IActionResult Insert([FromBody] Entities.Authentication.UserAccountQuestion pUserAccountQuestion)
+
+        [HttpGet("List/{pLanguageID}")]
+        public IActionResult List(int pUserAccountID)
         {
-            Entities.Authentication.UserAccountQuestion userAccountQuestion = new Entities.Authentication.UserAccountQuestion();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountQuestiondTo"))
+
+            Entities.Authentication.UserAccountPasswordHistory userAccountPasswordHistory = new Entities.Authentication.UserAccountPasswordHistory();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
             {
                 MethodBase method = MethodBase.GetCurrentMethod();
                 APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountQuestiondTo"]);
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APILicensedTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                    return Ok(authenticationAbstraction.ListUserAccountPasswordHistories(pUserAccountID));
+                }
+                else
+                {
+                    apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    userAccountPasswordHistory.ErrorsDetected = true;
+                    userAccountPasswordHistory.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountPasswordHistory);
+
+                }
+            }
+            else
+            {
+
+                userAccountPasswordHistory.ErrorsDetected = true;
+                userAccountPasswordHistory.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
+                return Unauthorized(userAccountPasswordHistory);
+            }
+        }
+
+
+
+
+
+        // public UserAccountPasswordHistory InsertUserAccountPasswordHistory(UserAccountPasswordHistory pUserAccountPasswordHistory, int pUserAccountID)
+
+
+        [HttpPost("Insert")]
+        public IActionResult Insert([FromBody] Entities.Authentication.UserAccountPasswordHistory pUserAccountPasswordHistory, int pUserAccountID)
+        {
+            Entities.Authentication.UserAccountPasswordHistory userAccountPasswordHistory = new Entities.Authentication.UserAccountPasswordHistory();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountdTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountdTo"]);
                 if (state == APIKeyState.KeyValidAccessGranted)
                 {
                     if (apiAccess.AuditActivity)
@@ -119,14 +167,14 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(authenticationAbstraction.InsertUserAccountQuestion(pUserAccountQuestion));
+                        return Ok(authenticationAbstraction.InsertUserAccountPasswordHistory(pUserAccountPasswordHistory,pUserAccountID));
                     }
                     else
                     {
 
-                        userAccountQuestion.ErrorsDetected = true;
-                        userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
-                        return Unauthorized(userAccountQuestion);
+                        userAccountPasswordHistory.ErrorsDetected = true;
+                        userAccountPasswordHistory.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(userAccountPasswordHistory);
                     }
                 }
                 else
@@ -134,112 +182,20 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     if (apiAccess.AuditActivity)
                         apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
-                    userAccountQuestion.ErrorsDetected = true;
-                    userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(userAccountQuestion);
+                    userAccountPasswordHistory.ErrorsDetected = true;
+                    userAccountPasswordHistory.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountPasswordHistory);
                 }
             }
             else
             {
 
-                userAccountQuestion.ErrorsDetected = true;
-                userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountQuestiondTo within Header"));
-                return Unauthorized(userAccountQuestion);
+                userAccountPasswordHistory.ErrorsDetected = true;
+                userAccountPasswordHistory.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountdTo within Header"));
+                return Unauthorized(userAccountPasswordHistory);
             }
         }
 
 
-
-
-
-        // public UserAccountQuestion DeleteUserAccountQuestion(UserAccountQuestion pUserAccountQuestion)
-
-
-        [HttpPut("Update")]
-        public IActionResult Update([FromBody] Entities.Authentication.UserAccountQuestion pUserAccountQuestion)
-        {
-            Entities.Authentication.UserAccountQuestion userAccountQuestion = new Entities.Authentication.UserAccountQuestion();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountQuestiondTo"))
-            {
-                MethodBase method = MethodBase.GetCurrentMethod();
-                APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountQuestiondTo"]);
-                if (state == APIKeyState.KeyValidAccessGranted)
-                {
-                    if (apiAccess.AuditActivity)
-                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-
-                    if (apiAccess.InvokePrivateMethods)
-                    {
-                        AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
-
-                        return Ok(authenticationAbstraction.DeleteUserAccountQuestion(pUserAccountQuestion));
-                    }
-                    else
-                    {
-
-                        userAccountQuestion.ErrorsDetected = true;
-                        userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
-                        return Unauthorized(userAccountQuestion);
-                    }
-                }
-                else
-                {
-                    if (apiAccess.AuditActivity)
-                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-
-                    userAccountQuestion.ErrorsDetected = true;
-                    userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(userAccountQuestion);
-                }
-            }
-            else
-            {
-
-                userAccountQuestion.ErrorsDetected = true;
-                userAccountQuestion.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountQuestiondTo within Header"));
-                return Unauthorized(userAccountQuestion);
-            }
-        }
-
-
-
-
-
-        /*
-
-        // GET: api/<UserAccountQuestionController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<UserAccountQuestionController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<UserAccountQuestionController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<UserAccountQuestionController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<UserAccountQuestionController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        */
     }
 }

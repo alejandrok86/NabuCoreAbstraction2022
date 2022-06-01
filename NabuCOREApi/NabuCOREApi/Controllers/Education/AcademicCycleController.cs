@@ -19,7 +19,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
     public class AcademicCycleController : ControllerBase
     {
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("EducationToken API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("AcademicCycle API", 1, 0, 0, "");
 
         public AcademicCycleController (IConfiguration config)
         {
@@ -230,11 +230,6 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
         }
 
 
-
-
-
-
-
         //public AcademicCycle UpdateAcademicCycle(AcademicCycle pAcademicCycle)
 
         [HttpPut("Update")]
@@ -334,47 +329,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
             }
         }
 
-        //
-
-
-
-
-
-
-        /*/
-        // GET: api/<AcademicCycleController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<AcademicCycleController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<AcademicCycleController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<AcademicCycleController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<AcademicCycleController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        */
+       
 
 
     }

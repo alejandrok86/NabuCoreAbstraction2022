@@ -10,7 +10,6 @@ using Octavo.Gate.Nabu.CORE.Abstraction;
 using Octavo.Gate.Nabu.CORE.Entities;
 using Octavo.Gate.Nabu.CORE.API.Helper.Authentication;
 
-
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
@@ -92,7 +91,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(authenticationAbstraction.EncryptedLogin(pEncriptedLogRequest.AccountName, pEncriptedLogRequest.UnEncryptedPassword, pEncriptedLogRequest.IPAddress, pEncriptedLogRequest.language.LanguageID.Value, pEncriptedLogRequest.UserAccountIDAsExtraSalt));
+                        return Ok(authenticationAbstraction.EncryptedLogin(pEncriptedLogRequest.pAccountName, pEncriptedLogRequest.pUnEncryptedPassword, pEncriptedLogRequest.pIPAddress, pEncriptedLogRequest.language.LanguageID.Value, pEncriptedLogRequest.pUserAccountIDAsExtraSalt));
                     }
                     else
                     {

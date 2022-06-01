@@ -19,7 +19,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
     public class UserAccountQuestionController : ControllerBase
     {
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("UserAccountQuestion API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("AuthenticationToken API", 1, 0, 0, "");
 
         public UserAccountQuestionController(IConfiguration config)
         {

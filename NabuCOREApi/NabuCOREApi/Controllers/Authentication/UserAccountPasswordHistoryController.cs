@@ -19,7 +19,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
     public class UserAccountPasswordHistoryController : ControllerBase
     {
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("AuthenticationToken API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("UserAccountPasswordHistory API", 1, 0, 0, "");
 
         public UserAccountPasswordHistoryController(IConfiguration config)
         {

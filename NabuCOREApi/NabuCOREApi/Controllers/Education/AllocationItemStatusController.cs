@@ -20,7 +20,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
     public class AllocationItemStatusController : ControllerBase
     {
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("EducationToken API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("AllocationItemStatus API", 1, 0, 0, "");
 
         public AllocationItemStatusController(IConfiguration config)
         {

@@ -6,25 +6,13 @@ using System.Runtime.Serialization;
 namespace Octavo.Gate.Nabu.CORE.API.Helper.Authentication
 {
     [DataContract]
-    public class EncriptedLogRequest
+    public class LogoutRequest
     {
-
-        
         [DataMember]
-
-        public string AccountName { get; set; } = null;
+        public UserAccountSession userAccountSession { get; set; } = null;
         [DataMember]
-        public string UnEncryptedPassword { get; set; } = null;
-
-        [DataMember]
-        public string IPAddress { get; set; } = null;
-
+        public SessionEndStatus sessionEndStatus { get; set; } = null;
         [DataMember]
         public Language language { get; set; } = null;
-
-        [DataMember]
-
-        public bool UserAccountIDAsExtraSalt { get; set; } = false;
-
     }
 }

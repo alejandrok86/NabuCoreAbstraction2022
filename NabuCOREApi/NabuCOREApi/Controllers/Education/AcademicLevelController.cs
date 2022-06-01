@@ -8,6 +8,7 @@ using Octavo.Gate.Nabu.CORE.API.Helper;
 using Microsoft.Extensions.Configuration;
 using Octavo.Gate.Nabu.CORE.Abstraction;
 using Octavo.Gate.Nabu.CORE.Entities;
+using Octavo.Gate.Nabu.CORE.API.Helper.Education;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +20,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
     public class AcademicLevelController : ControllerBase
     {
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("EducationToken API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("AcademicLevel API", 1, 0, 0, "");
 
         public AcademicLevelController(IConfiguration config)
         {
@@ -139,6 +140,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
             }
         }
         
+        
         //public AcademicLevel[] ListAcademicLevels(int pLanguageID)
 
         [HttpGet("List/{pLanguageID}")]
@@ -179,52 +181,61 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
             }
         }
 
-        /*
-         * 
-         * ERROR AL  IMPLEMENTAR ESTE METODO
-        //public AcademicLevel[] ListAcademicLevels(AcademicStage pAcademicStage, EducationProvider pEducationProvider, int pLanguageID)
 
-
-        [HttpGet("List/{pAcademicStage}/{pEducationProvider}/{pLanguageID}")]
-        public IActionResult List(Entities.Education.AcademicStage pAcademicStage, Entities.Education.EducationProvider pEducationProvider, int pLanguageID)
+        
+        
+        ////public AcademicLevel[] ListAcademicLevels(AcademicStage pAcademicStage, EducationProvider pEducationProvider, int pLanguageID)
+        [HttpPost("ListComplex")]
+        public IActionResult ListComplex([FromBody] ListAcademicLevelsRequest pListAcademicLevelsRequest)
         {
-
+           
             Entities.Education.AcademicLevel academicLevel = new Entities.Education.AcademicLevel();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAcademicLeveldTo"))
             {
                 MethodBase method = MethodBase.GetCurrentMethod();
                 APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APILicensedTo"]);
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIAcademicLeveldTo"]);
                 if (state == APIKeyState.KeyValidAccessGranted)
                 {
                     if (apiAccess.AuditActivity)
                         apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
-                    EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+                        
+                        return Ok(educationAbstraction.ListAcademicLevels(pListAcademicLevelsRequest.AcademicStage, pListAcademicLevelsRequest.EducationProvider, pListAcademicLevelsRequest.language.LanguageID.Value));
+                    
+                        }
 
-                    return Ok(educationAbstraction.ListAcademicLevels(pAcademicStage, pEducationProvider, pLanguageID));
+                    else
+                    {
+
+                        academicLevel.ErrorsDetected = true;
+                        academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(academicLevel);
+                    }
                 }
                 else
                 {
-                    apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
                     academicLevel.ErrorsDetected = true;
                     academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
                     return Unauthorized(academicLevel);
-
                 }
             }
             else
             {
 
                 academicLevel.ErrorsDetected = true;
-                academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
+                academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIAcademicLeveldTo within Header"));
                 return Unauthorized(academicLevel);
             }
         }
-
-        */
-
+        
+        
         
         //public AcademicLevel InsertAcademicLevel(AcademicLevel pAcademicLevel)
         [HttpPost("Insert")]
@@ -378,7 +389,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
 
 
 
-        /*
+        
 
 
         //ver estos metodos si son correctos
@@ -387,7 +398,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
         //  public AcademicLevel AssignAcademicLevel(AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
 
         [HttpPost("Assign")]
-        public IActionResult Assign([FromBody] Entities.Education.AcademicLevel pAcademicLevel, Entities.Education.AcademicStage pAcademicStage, Entities.Education.EducationProvider pEducationProvider)
+        public IActionResult Assign([FromBody] AssingRequest pAssingRequest)
         {
             Entities.Education.AcademicLevel academicLevel = new Entities.Education.AcademicLevel();
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAcademicLeveldTo"))
@@ -404,7 +415,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
                     {
                         EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(educationAbstraction.AssignAcademicLevel(pAcademicLevel, pAcademicStage, pEducationProvider));
+                        return Ok(educationAbstraction.AssignAcademicLevel(pAssingRequest.AcademicLevel, pAssingRequest.AcademicStage, pAssingRequest.EducationProvider));
                     }
                     else
                     {
@@ -433,18 +444,11 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
             }
         }
 
-        */
-
-        
-
-
-
-        /*
         
 
         //public AcademicLevel RemoveAcademicLevel(AcademicLevel pAcademicLevel, AcademicStage pAcademicStage, EducationProvider pEducationProvider)
         [HttpDelete("Remove")]
-        public IActionResult Remove([FromBody] Entities.Education.AcademicLevel pAcademicLevel, Entities.Education.AcademicStage pAcademicStage, Entities.Education.EducationProvider pEducationProvider)
+        public IActionResult Remove([FromBody] AssingRequest pAssingRequest)
         {
             Entities.Education.AcademicLevel academicLevel = new Entities.Education.AcademicLevel();
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAcademicLeveldTo"))
@@ -461,7 +465,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
                     {
                         EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(educationAbstraction.RemoveAcademicLevel(pAcademicLevel, pAcademicStage,pEducationProvider));
+                        return Ok(educationAbstraction.RemoveAcademicLevel(pAssingRequest.AcademicLevel, pAssingRequest.AcademicStage, pAssingRequest.EducationProvider));
                     }
                     else
                     {
@@ -491,48 +495,6 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
             }
         }
 
-        */
-
-
-
-        //
-
-
-        /*
-        // GET: api/<AcademicLevelController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<AcademicLevelController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<AcademicLevelController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<AcademicLevelController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<AcademicLevelController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        */
-
-
+        
     }
 }

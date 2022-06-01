@@ -21,7 +21,7 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
     {
 
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("EducationToken API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("AcademicStage API", 1, 0, 0, "");
 
         public AcademicStageController(IConfiguration config)
         {

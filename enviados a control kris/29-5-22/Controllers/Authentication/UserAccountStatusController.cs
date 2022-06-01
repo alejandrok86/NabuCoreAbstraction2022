@@ -13,15 +13,15 @@ using Octavo.Gate.Nabu.CORE.Entities;
 
 namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
 {
-    [Route("Authentication/License")]
+    [Route("Authentication/UserAccountStatus")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "Authentication")]
-    public class LicenseController : ControllerBase 
+    public class UserAccountStatusController : ControllerBase
     {
         private IConfiguration _config;
-        private BaseVersion release = new BaseVersion("License API", 1, 0, 0, "");
+        private BaseVersion release = new BaseVersion("AuthenticationToken API", 1, 0, 0, "");
 
-        public LicenseController(IConfiguration config)
+        public UserAccountStatusController(IConfiguration config)
         {
             _config = config;
         }
@@ -63,72 +63,49 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
             }
         }
 
-
-
         /*
-        // GET: api/<LicenseController>
-       // public IEnumerable<string> Get()
-        
-        public IActionResult<string> Get()
+        // GET: api/<UserAccountStatusController>
+        [HttpGet]
+        public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
-        */
-        //GET by id
-        // public License GetLicense(int pLicenseID)
-        [HttpGet("Get/{pLicenseID}")]
-        public IActionResult Get(int pLicenseID)
-        {
-            Entities.Authentication.License license = new Entities.Authentication.License();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
-            {
-                System.Reflection.MethodBase method = MethodBase.GetCurrentMethod();
-                APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APILicensedTo"]);
-                if (state == APIKeyState.KeyValidAccessGranted)
-                {
-                    if (apiAccess.AuditActivity)
-                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
-                    AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
-
-                    return Ok(authenticationAbstraction.GetLicense(pLicenseID));
-                }
-                else
-                {
-                    apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-
-                    license.ErrorsDetected = true;
-                    license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(license);
-                }
-            }
-            else
-            {
-                license.ErrorsDetected = true;
-                license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
-                return Unauthorized(license);
-            }
-        }
-
-
-        /*
-
-        //****************************************************
-        /*
+        // GET api/<UserAccountStatusController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
-        */
-        //**GET BY KEY
-        //public License GetLicenseByKey(string pLicenseKey)
 
-        [HttpGet("Get/{pLicenseKey}")]
-        public IActionResult Get(string pLicenseKey)
+        // POST api/<UserAccountStatusController>
+        [HttpPost]
+        public void Post([FromBody] string value)
         {
-            Entities.Authentication.License license = new Entities.Authentication.License();
+        }
+
+        // PUT api/<UserAccountStatusController>/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+        }
+
+        // DELETE api/<UserAccountStatusController>/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+
+        */
+
+
+        // public UserAccountStatus GetUserAccountStatus(int pUserAccountStatusID, int pLanguageID)
+
+
+        [HttpGet("Get/{pUserAccountStatusID}/{pLanguageID}")]
+        public IActionResult Get(int pUserAccountStatusID, int pLanguageID)
+        {
+            Entities.Authentication.UserAccountStatus userAccountStatus = new Entities.Authentication.UserAccountStatus();
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
             {
                 System.Reflection.MethodBase method = MethodBase.GetCurrentMethod();
@@ -141,40 +118,69 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
 
                     AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                    return Ok(authenticationAbstraction.GetLicenseByKey(pLicenseKey));
+                    return Ok(authenticationAbstraction.GetUserAccountStatus(pUserAccountStatusID, pLanguageID));
                 }
                 else
                 {
                     apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
-                    license.ErrorsDetected = true;
-                    license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(license);
+                    userAccountStatus.ErrorsDetected = true;
+                    userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountStatus);
                 }
             }
             else
             {
-                license.ErrorsDetected = true;
-                license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
-                return Unauthorized(license);
+                userAccountStatus.ErrorsDetected = true;
+                userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
+                return Unauthorized(userAccountStatus);
             }
         }
 
 
-        
-
-        
-        //LIST
-        //public License[] ListLicenses()
-        [HttpGet("List")]
-        ////listar
-        ///
-        
-        public IActionResult List()
+        //public UserAccountStatus GetUserAccountStatusByAlias(string pAlias, int pLanguageID)
+        [HttpGet("Get/{pAlias}/{pLanguageID}")]
+        public IActionResult Get(string pAlias, int pLanguageID)
         {
-            
-            Entities.Authentication.AuthenticationToken authenticationToken = new Entities.Authentication.AuthenticationToken();
+            Entities.Authentication.UserAccountStatus userAccountStatus = new Entities.Authentication.UserAccountStatus();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
+            {
+                System.Reflection.MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APILicensedTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
+                    AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                    return Ok(authenticationAbstraction.GetUserAccountStatusByAlias(pAlias, pLanguageID));
+                }
+                else
+                {
+                    apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    userAccountStatus.ErrorsDetected = true;
+                    userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountStatus);
+                }
+            }
+            else
+            {
+                userAccountStatus.ErrorsDetected = true;
+                userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
+                return Unauthorized(userAccountStatus);
+            }
+        }
+
+
+        //public UserAccountStatus[] ListUserAccountStatus(int pLanguageID)
+        [HttpGet("List/{pLanguageID}")]
+        public IActionResult List(int pLanguageID)
+        {
+
+            Entities.Authentication.UserAccountStatus userAccountStatus = new Entities.Authentication.UserAccountStatus();
             if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
             {
                 MethodBase method = MethodBase.GetCurrentMethod();
@@ -186,49 +192,40 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                         apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
                     AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
-                    
-                    return Ok(authenticationAbstraction.ListLicenses());
+
+                    return Ok(authenticationAbstraction.ListUserAccountStatus(pLanguageID));
                 }
                 else
                 {
                     apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-                    
-                    authenticationToken.ErrorsDetected = true;
-                    authenticationToken.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(authenticationToken);
+
+                    userAccountStatus.ErrorsDetected = true;
+                    userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountStatus);
+
                 }
             }
             else
             {
-                
-                authenticationToken.ErrorsDetected = true;
-                authenticationToken.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
-                return Unauthorized(authenticationToken);
+
+                userAccountStatus.ErrorsDetected = true;
+                userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
+                return Unauthorized(userAccountStatus);
             }
         }
 
-        
 
+        // public UserAccountStatus InsertUserAccountStatus(UserAccountStatus pUserAccountStatus)
 
-        /*
-        // POST api/<LicenseController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-        */
-        //public License InsertLicense(License pLicense)
-
-        
         [HttpPost("Insert")]
-        public IActionResult Insert([FromBody] Entities.Authentication.License pLicense)
+        public IActionResult Insert([FromBody] Entities.Authentication.UserAccountStatus pUserAccountStatus)
         {
-            Entities.Authentication.License license = new Entities.Authentication.License();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
+            Entities.Authentication.UserAccountStatus userAccountStatus = new Entities.Authentication.UserAccountStatus();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountStatusdTo"))
             {
                 MethodBase method = MethodBase.GetCurrentMethod();
                 APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APILicensedTo"]);
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountStatusdTo"]);
                 if (state == APIKeyState.KeyValidAccessGranted)
                 {
                     if (apiAccess.AuditActivity)
@@ -238,55 +235,47 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(authenticationAbstraction.InsertLicense(pLicense));
+                        return Ok(authenticationAbstraction.InsertUserAccountStatus(pUserAccountStatus));
                     }
                     else
                     {
-                        
-                        license.ErrorsDetected = true;
-                        license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
-                        return Unauthorized(license);
+
+                        userAccountStatus.ErrorsDetected = true;
+                        userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(userAccountStatus);
                     }
                 }
                 else
                 {
                     if (apiAccess.AuditActivity)
                         apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-                    
-                    license.ErrorsDetected = true;
-                    license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(license);
+
+                    userAccountStatus.ErrorsDetected = true;
+                    userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountStatus);
                 }
             }
             else
             {
-                
-                license.ErrorsDetected = true;
-                license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
-                return Unauthorized(license);
+
+                userAccountStatus.ErrorsDetected = true;
+                userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountStatusdTo within Header"));
+                return Unauthorized(userAccountStatus);
             }
         }
 
-        
-        /*
-        // PUT api/<LicenseController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-        */
-        //public License UpdateLicense(License pLicense)
 
-        
+
+        // public UserAccountStatus UpdateUserAccountStatus(UserAccountStatus pUserAccountStatus)
         [HttpPut("Update")]
-        public IActionResult Update([FromBody] Entities.Authentication.License pLicense)
+        public IActionResult Update([FromBody] Entities.Authentication.UserAccountStatus pUserAccountStatus)
         {
-            Entities.Authentication.License license = new Entities.Authentication.License();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
+            Entities.Authentication.UserAccountStatus userAccountStatus = new Entities.Authentication.UserAccountStatus();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountStatusdTo"))
             {
                 MethodBase method = MethodBase.GetCurrentMethod();
                 APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APILicensedTo"]);
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountStatusdTo"]);
                 if (state == APIKeyState.KeyValidAccessGranted)
                 {
                     if (apiAccess.AuditActivity)
@@ -296,58 +285,46 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(authenticationAbstraction.UpdateLicense(pLicense));
+                        return Ok(authenticationAbstraction.UpdateUserAccountStatus(pUserAccountStatus));
                     }
                     else
                     {
-                       
-                        license.ErrorsDetected = true;
-                        license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
-                        return Unauthorized(license);
+
+                        userAccountStatus.ErrorsDetected = true;
+                        userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(userAccountStatus);
                     }
                 }
                 else
                 {
                     if (apiAccess.AuditActivity)
                         apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-                    
-                    license.ErrorsDetected = true;
-                    license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(license);
+
+                    userAccountStatus.ErrorsDetected = true;
+                    userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountStatus);
                 }
             }
             else
             {
-                
-                license.ErrorsDetected = true;
-                license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
-                return Unauthorized(license);
+
+                userAccountStatus.ErrorsDetected = true;
+                userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountStatusdTo within Header"));
+                return Unauthorized(userAccountStatus);
             }
         }
 
 
-        
-
-
-        /*
-        // DELETE api/<LicenseController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-        */
-        //public License DeleteLicense(License pLicense)
-
-        
+        // public UserAccountStatus DeleteUserAccountStatus(UserAccountStatus pUserAccountStatus)
         [HttpDelete("Delete")]
-        public IActionResult Delete([FromBody] Entities.Authentication.License pLicense)
+        public IActionResult Delete([FromBody] Entities.Authentication.UserAccountStatus pUserAccountStatus)
         {
-            Entities.Authentication.License license = new Entities.Authentication.License();
-            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APILicensedTo"))
+            Entities.Authentication.UserAccountStatus userAccountStatus = new Entities.Authentication.UserAccountStatus();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIUserAccountStatusdTo"))
             {
                 MethodBase method = MethodBase.GetCurrentMethod();
                 APIAccessKey apiAccess = new APIAccessKey();
-                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APILicensedTo"]);
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIUserAccountStatusdTo"]);
                 if (state == APIKeyState.KeyValidAccessGranted)
                 {
                     if (apiAccess.AuditActivity)
@@ -357,32 +334,32 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Authentication
                     {
                         AuthenticationAbstraction authenticationAbstraction = new AuthenticationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
 
-                        return Ok(authenticationAbstraction.DeleteLicense(pLicense));
+                        return Ok(authenticationAbstraction.DeleteUserAccountStatus(pUserAccountStatus));
                     }
                     else
                     {
-                       
-                        license.ErrorsDetected = true;
-                        license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
-                        return Unauthorized(license);
+
+                        userAccountStatus.ErrorsDetected = true;
+                        userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(userAccountStatus);
                     }
                 }
                 else
                 {
                     if (apiAccess.AuditActivity)
                         apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
-                   
-                    license.ErrorsDetected = true;
-                    license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
-                    return Unauthorized(license);
+
+                    userAccountStatus.ErrorsDetected = true;
+                    userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(userAccountStatus);
                 }
             }
             else
             {
-              
-                license.ErrorsDetected = true;
-                license.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APILicensedTo within Header"));
-                return Unauthorized(license);
+
+                userAccountStatus.ErrorsDetected = true;
+                userAccountStatus.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIUserAccountStatusdTo within Header"));
+                return Unauthorized(userAccountStatus);
 
             }
         }
