@@ -8,6 +8,7 @@ using Octavo.Gate.Nabu.CORE.API.Helper;
 using Microsoft.Extensions.Configuration;
 using Octavo.Gate.Nabu.CORE.Abstraction;
 using Octavo.Gate.Nabu.CORE.Entities;
+using Octavo.Gate.Nabu.CORE.API.Helper.Education;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -176,8 +177,58 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
                 return Unauthorized(academicStage);
             }
         }
-        //Error
+        
+
         //public AcademicStage[] ListAcademicStages(EducationProvider pEducationProvider, int pLanguageID)
+        [HttpPost("ListComplexStages")]
+        public IActionResult ListComplexStages([FromBody] ListAcademicLevelsRequest pListAcademicStagesRequest)
+        {
+
+            Entities.Education.AcademicLevel academicLevel = new Entities.Education.AcademicLevel();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAcademicLeveldTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIAcademicLeveldTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                        return Ok(educationAbstraction.ListAcademicStages(pListAcademicStagesRequest.EducationProvider, pListAcademicStagesRequest.language.LanguageID.Value));
+
+                    }
+
+                    else
+                    {
+
+                        academicLevel.ErrorsDetected = true;
+                        academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(academicLevel);
+                    }
+                }
+                else
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    academicLevel.ErrorsDetected = true;
+                    academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(academicLevel);
+                }
+            }
+            else
+            {
+
+                academicLevel.ErrorsDetected = true;
+                academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIAcademicLeveldTo within Header"));
+                return Unauthorized(academicLevel);
+            }
+        }
 
 
         //public AcademicStage InsertAcademicStage(AcademicStage pAcademicStage)
@@ -327,9 +378,101 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
 
         //Error
         //public AcademicStage AssignAcademicStage(AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+        [HttpPost("Assign")]
+        public IActionResult Assign([FromBody] AssingRequest pAssingStageRequest)
+        {
+            Entities.Education.AcademicLevel academicLevel = new Entities.Education.AcademicLevel();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAcademicLeveldTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIAcademicLeveldTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
 
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                        return Ok(educationAbstraction.AssignAcademicStage(pAssingStageRequest.AcademicStage, pAssingStageRequest.EducationProvider));
+                    }
+                    else
+                    {
+
+                        academicLevel.ErrorsDetected = true;
+                        academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(academicLevel);
+                    }
+                }
+                else
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    academicLevel.ErrorsDetected = true;
+                    academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(academicLevel);
+                }
+            }
+            else
+            {
+
+                academicLevel.ErrorsDetected = true;
+                academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIAcademicLeveldTo within Header"));
+                return Unauthorized(academicLevel);
+            }
+        }
 
         //public AcademicStage RemoveAcademicStage(AcademicStage pAcademicStage, EducationProvider pEducationProvider)
+        [HttpDelete("Remove")]
+        public IActionResult Remove([FromBody] AssingRequest pRemoveAcademicStageRequest)
+        {
+            Entities.Education.AcademicLevel academicLevel = new Entities.Education.AcademicLevel();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAcademicLeveldTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIAcademicLeveldTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                        return Ok(educationAbstraction.RemoveAcademicStage(pRemoveAcademicStageRequest.AcademicStage, pRemoveAcademicStageRequest.EducationProvider));
+                    }
+                    else
+                    {
+
+                        academicLevel.ErrorsDetected = true;
+                        academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(academicLevel);
+                    }
+                }
+                else
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    academicLevel.ErrorsDetected = true;
+                    academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(academicLevel);
+                }
+            }
+            else
+            {
+
+                academicLevel.ErrorsDetected = true;
+                academicLevel.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIAcademicLeveldTo within Header"));
+                return Unauthorized(academicLevel);
+
+            }
+        }
 
 
 
