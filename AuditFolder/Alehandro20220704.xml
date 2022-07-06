@@ -1,0 +1,2 @@
+<audit at="04-jul.-2022 23:41:04:143" service="LanguageAPI" method="GetById" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />
+<audit at="04-jul.-2022 23:41:14:724" service="LanguageAPI" method="GetById" optional="KeyValidAccessGranted" ipAddress="127.0.0.1" userAgent="PostmanRuntime/7.28.4" />

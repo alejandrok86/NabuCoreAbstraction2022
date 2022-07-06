@@ -4,6 +4,7 @@ using Octavo.Gate.Nabu.CORE.Abstraction;
 using Octavo.Gate.Nabu.CORE.API.Helper;
 using Octavo.Gate.Nabu.CORE.Entities;
 using System.Reflection;
+using Octavo.Gate.Nabu.CORE.API.Helper.Education;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -62,7 +63,9 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
         /************************************************************************************************************************************
          * List
          ***********************************************************************************************************************************/
-        /*
+        /* public AssessmentInstrument[] ListAssessmentInstruments(int pUnitID, int pLanguageID)
+         * 
+         *
         [HttpGet("Get/{pLanguageID}/{pAssessmentInstrumentID}")]
         public IActionResult Get(int pLanguageID, int pAssessmentInstrumentID)
         {
@@ -211,11 +214,104 @@ namespace Octavo.Gate.Nabu.CORE.API.Controllers.Education
         }
 
 
-
+        //AssessmentInstrumentRequest
         ///ERROR
         //public AssessmentInstrument[] ListAssessmentInstruments(int pUnitID, int pLanguageID)
+        [HttpPost("ListComplexAssessmentInstruments")]
+        public IActionResult ListComplexAssessmentInstruments([FromBody] Octavo.Gate.Nabu.CORE.API.Helper.Education.AssessmentInstrumentRequest pAssessmentInstrumentRequest)
+        {
+            Entities.Education.AssessmentInstrument assessmentInstrument = new Entities.Education.AssessmentInstrument();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAssessmentInstrumentdTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIAssessmentInstrumentdTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                        return Ok(educationAbstraction.ListAssessmentInstruments(pAssessmentInstrumentRequest.pUnitID.Value, pAssessmentInstrumentRequest.language.LanguageID.Value));
+                    }
+                    else
+                    {
+
+                        assessmentInstrument.ErrorsDetected = true;
+                        assessmentInstrument.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(assessmentInstrument);
+                    }
+                }
+                else
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    assessmentInstrument.ErrorsDetected = true;
+                    assessmentInstrument.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(assessmentInstrument);
+                }
+            }
+            else
+            {
+
+                assessmentInstrument.ErrorsDetected = true;
+                assessmentInstrument.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIAssessmentInstrumentdTo within Header"));
+                return Unauthorized(assessmentInstrument);
+            }
+        }
+
         ///ERROR
         //public AssessmentInstrument[] ListAssessmentInstruments(Octavo.Gate.Nabu.CORE.Entities.Core.Party pOwnedBy, int pLanguageID)
+        [HttpPost("ListComplexAssessmentParty")]
+        public IActionResult ListComplexAssessmentParty([FromBody] Octavo.Gate.Nabu.CORE.API.Helper.Education.AssessmentInstrumentRequest pAssessmentInstrumentRequest)
+        {
+            Entities.Education.AssessmentInstrument assessmentInstrument = new Entities.Education.AssessmentInstrument();
+            if (Request.Headers.ContainsKey("APIKey") && Request.Headers.ContainsKey("APIAssessmentInstrumentdTo"))
+            {
+                MethodBase method = MethodBase.GetCurrentMethod();
+                APIAccessKey apiAccess = new APIAccessKey();
+                APIKeyState state = apiAccess.ValidateKey(_config.GetValue<string>("APIKeyConfig:Filename"), Request.Headers["APIKey"], Request.Headers["APIAssessmentInstrumentdTo"]);
+                if (state == APIKeyState.KeyValidAccessGranted)
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    if (apiAccess.InvokeProtectedMethods)
+                    {
+                        EducationAbstraction educationAbstraction = new EducationAbstraction(_config.GetValue<string>("Octavo.Gate.Nabu.Data:Source"), DatabaseType.MSSQL, _config.GetValue<string>("Octavo.Gate.Nabu.Data:ErrorLogFile"));
+
+                        return Ok(educationAbstraction.ListAssessmentInstruments(pAssessmentInstrumentRequest.pOwnedBy, pAssessmentInstrumentRequest.language.LanguageID.Value));
+                    }
+                    else
+                    {
+
+                        assessmentInstrument.ErrorsDetected = true;
+                        assessmentInstrument.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "You do not have permission to invoke Protected methods"));
+                        return Unauthorized(assessmentInstrument);
+                    }
+                }
+                else
+                {
+                    if (apiAccess.AuditActivity)
+                        apiAccess.AuditAccess(_config.GetValue<string>("APIKeyConfig:AuditFolder"), release.Component, method.Name, state.ToString(), Helper.APICallerInfo.GetIPAddress(HttpContext), Helper.APICallerInfo.GetUserAgent(Request));
+
+                    assessmentInstrument.ErrorsDetected = true;
+                    assessmentInstrument.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, state.ToString()));
+                    return Unauthorized(assessmentInstrument);
+                }
+            }
+            else
+            {
+
+                assessmentInstrument.ErrorsDetected = true;
+                assessmentInstrument.ErrorDetails.Add(new Octavo.Gate.Nabu.CORE.Entities.Error.ErrorDetail(-1, "Missing APIKey/APIAssessmentInstrumentdTo within Header"));
+                return Unauthorized(assessmentInstrument);
+            }
+        }
 
 
         // public AssessmentInstrument InsertAssessmentInstrument(AssessmentInstrument pAssessmentInstrument)

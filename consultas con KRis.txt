@@ -130,7 +130,7 @@ AssessmentEventController
 
 
 
-/**********************************************************************
+/*******************************************************okok*************** 22-6-22
          * Assessment Instrument
 
        ///ERROR
@@ -199,11 +199,5 @@ AssessmentEventController
 
 
 ---------
-24-5-222
 
-hoy agregue el nuevo proyecto de NabuCOREApiHelper
-de ahi tengo q import el using a ese proyecto y colocar la nueva varible al metodo logout
-ver como hacer eso de using 
-
-en todo caso mañana a la tarde podemos conectar con kris
 
